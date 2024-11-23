@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace WinFormConversion
+namespace WPSConversion
 {
     public class Program
     {

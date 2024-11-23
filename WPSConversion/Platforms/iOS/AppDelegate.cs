@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace WinFormConversion
+namespace WPSConversion
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

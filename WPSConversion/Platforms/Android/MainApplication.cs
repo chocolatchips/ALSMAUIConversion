@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace WinFormConversion
+namespace WPSConversion
 {
     [Application]
     public class MainApplication : MauiApplication

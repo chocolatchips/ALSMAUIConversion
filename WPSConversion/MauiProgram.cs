@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui;
 
-namespace WinFormConversion
+namespace WPSConversion
 {
     public static class MauiProgram
     {
@@ -10,7 +9,6 @@ namespace WinFormConversion
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

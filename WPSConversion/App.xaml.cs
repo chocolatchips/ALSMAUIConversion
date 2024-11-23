@@ -1,4 +1,4 @@
-﻿namespace WinFormConversion
+﻿namespace WPSConversion
 {
     public partial class App : Application
     {
