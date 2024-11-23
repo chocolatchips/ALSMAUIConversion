@@ -9,13 +9,10 @@ namespace WPSConversion.Views
     public partial class ClientView : ContentPage, IView
     {
         public IViewModel ViewModel { get => BindingContext as IViewModel; set => BindingContext = value; }
-
         public ClientView()
         {
-            InitializeComponent();
-
             ViewModel = new ClientViewModel(this);
-            BindingContext = ViewModel;
+            InitializeComponent();
         }
 
         public void Close()

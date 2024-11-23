@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 using WPSConversion.Entities;
 using WPSConversion.Views;
+using Contact = WPSConversion.Entities.Contact;
 
 namespace WPSConversion.ViewModels
 {
@@ -15,7 +18,7 @@ namespace WPSConversion.ViewModels
         /// <summary>EditClient</summary>
         public Client EditClient { get => _EditClient; private set => SetNotifyableProperty(ref _EditClient, value, nameof(EditClient)); }
 
-        public BindingList<Client> ClientList { get; private set; }
+        public ObservableCollection<Client> ClientList { get; private set; }
 
         private bool _IsEditing;
         /// <summary>IsEditing</summary>
@@ -59,7 +62,7 @@ namespace WPSConversion.ViewModels
             NewCommand = new DelegateCommand(New, CanNew);
             SaveCommand = new DelegateCommand(Save, CanSave);
 
-            ClientList = new BindingList<Client>();
+            ClientList = new ObservableCollection<Client>();
             ProvinceList = Province.Provinces;
         }
 
@@ -178,7 +181,7 @@ namespace WPSConversion.ViewModels
                         client = SelectedClient;
                     }
 
-                    foreach (Entities.Contact contact in client.Contacts)
+                    foreach (Contact contact in client.Contacts)
                     {
                         contact.ClientId = client.Id;
                         contact.AcceptChanges();
@@ -194,7 +197,7 @@ namespace WPSConversion.ViewModels
                         ClientList.Add(client);
                     }
 
-                    ClientList = new BindingList<Client>(ClientList.OrderBy(x => x.Name).ToList());
+                    ClientList = new ObservableCollection<Client>(ClientList.OrderBy(x => x.Name).ToList());
                     RaisePropertyChanged(nameof(ClientList));
 
                     SelectedClient = client;

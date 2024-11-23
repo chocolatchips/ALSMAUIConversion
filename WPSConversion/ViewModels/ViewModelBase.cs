@@ -18,7 +18,7 @@ namespace WPSConversion.ViewModels
 
         public ViewModelBase(TView view)
         {
-            CloseCommand = new DelegateCommand(Close);
+            CloseCommand = new DelegateCommand(Close, CanClose);
 
             _View = view;
 
@@ -30,6 +30,8 @@ namespace WPSConversion.ViewModels
 
         #region Close
         public DelegateCommand CloseCommand { get; }
+
+        private bool CanClose() => true;
 
         /// <inheritdoc/>
         public void Close()

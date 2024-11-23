@@ -16,12 +16,6 @@ namespace WPSConversion
             _execute = execute;
         }
 
-        //public event EventHandler CanExecuteChanged
-        //{
-        //    add => CommandManager.RequerySuggested += value;
-        //    remove => CommandManager.RequerySuggested -= value;
-        //}
-
         public bool CanExecute()
         {
             return _canExecute?.Invoke() ?? true;
@@ -38,7 +32,6 @@ namespace WPSConversion
 
         public void RaiseCanExecuteChanged()
         {
-            //CommandManager.InvalidateRequerySuggested();
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }

@@ -1,7 +1,6 @@
 ﻿<ContentPage x:Class="WPSConversion.Views.ClientView"
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        xmlns:local="clr-namespace:WPSConversion.Views"
         Title="ClientView" HeightRequest="450" WidthRequest="800">
     <ContentPage.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
@@ -148,9 +147,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding FirstName}" MinimumWidthRequest="100"/>
-                                    <Label Text="{Binding LastName}" MinimumWidthRequest="100"/>
-                                    <Label Text="{Binding Email}" MinimumWidthRequest="100"/>
+                                    <Entry Text="{Binding FirstName}" MinimumWidthRequest="100"/>
+                                    <Entry Text="{Binding LastName}" MinimumWidthRequest="100"/>
+                                    <Entry Text="{Binding Email}" MinimumWidthRequest="100"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

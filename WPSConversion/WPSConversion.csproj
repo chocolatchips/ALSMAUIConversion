@@ -68,7 +68,7 @@
 	  <MauiXaml Update="Views\ClientView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ClientView1.xaml">
+	  <MauiXaml Update="Views\TestPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
