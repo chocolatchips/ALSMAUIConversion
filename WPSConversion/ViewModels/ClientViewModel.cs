@@ -7,7 +7,7 @@ using WPSConversion.Views;
 
 namespace WPSConversion.ViewModels
 {
-    public class ClientViewModel : ViewModelBase<ClientView>
+    public partial class ClientViewModel : ViewModelBase<ClientView>
     {
         private Client _originalClient;
 

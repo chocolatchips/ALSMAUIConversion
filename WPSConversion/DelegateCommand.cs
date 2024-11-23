@@ -8,17 +8,19 @@ namespace WPSConversion
         private readonly Func<bool> _canExecute;
         private readonly Action _execute;
 
+        public event EventHandler? CanExecuteChanged;
+
         public DelegateCommand(Action execute, Func<bool> canExecute = null)
         {
             _canExecute = canExecute;
             _execute = execute;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
-        }
+        //public event EventHandler CanExecuteChanged
+        //{
+        //    add => CommandManager.RequerySuggested += value;
+        //    remove => CommandManager.RequerySuggested -= value;
+        //}
 
         public bool CanExecute()
         {
@@ -36,7 +38,8 @@ namespace WPSConversion
 
         public void RaiseCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            //CommandManager.InvalidateRequerySuggested();
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

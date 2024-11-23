@@ -6,15 +6,16 @@ namespace WPSConversion.Views
     /// <summary>
     /// Logique d'interaction pour ClientView.xaml
     /// </summary>
-    public partial class ClientView : Window, IView
+    public partial class ClientView : ContentPage, IView
     {
-        public IViewModel ViewModel { get => DataContext as IViewModel; set => DataContext = value; }
+        public IViewModel ViewModel { get => BindingContext as IViewModel; set => BindingContext = value; }
 
         public ClientView()
         {
             InitializeComponent();
 
             ViewModel = new ClientViewModel(this);
+            BindingContext = ViewModel;
         }
 
         public void Close()

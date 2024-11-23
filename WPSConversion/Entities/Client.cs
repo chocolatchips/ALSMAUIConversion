@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace TestApp.Entities
+namespace WPSConversion.Entities
 {
     public class Client : EntityBase<Client>
     {

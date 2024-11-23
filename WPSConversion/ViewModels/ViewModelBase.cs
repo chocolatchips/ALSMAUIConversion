@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using WPSConversion.Views;
+using IView = WPSConversion.Views.IView;
 
 namespace WPSConversion.ViewModels
 {
@@ -67,7 +68,8 @@ namespace WPSConversion.ViewModels
 
         public void ShowError(Exception ex, string methodName)
         {
-            MessageBox.Show(View as Window, $"ERROR - {GetType().Name}.{methodName}\n{ex.Message}");
+            // TODO
+            //MessageBox.Show(View as Window, $"ERROR - {GetType().Name}.{methodName}\n{ex.Message}");
         }
 
         /// <summary>

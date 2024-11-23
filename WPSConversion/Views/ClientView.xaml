@@ -1,19 +1,15 @@
-﻿<Window x:Class="WPSConversion.Views.ClientView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+﻿<ContentPage x:Class="WPSConversion.Views.ClientView"
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:local="clr-namespace:WPSConversion.Views"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:ClientViewModelDesign, IsDesignTimeCreatable=True}"
-        Title="ClientView" Height="450" Width="800">
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Height" Value="25"/>
+        Title="ClientView" HeightRequest="450" WidthRequest="800">
+    <ContentPage.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="HeightRequest" Value="25"/>
             <Setter Property="Margin" Value="3"/>
-            <Setter Property="Width" Value="90"/>
+            <Setter Property="WidthRequest" Value="90"/>
         </Style>
-    </Window.Resources>
+    </ContentPage.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -25,8 +21,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="LightGray" BorderBrush="Gray" BorderThickness="1">
-                <TextBlock Text="Clients" FontWeight="Bold" Margin="3"/>
+            <Border Grid.Row="0" Background="LightGray" Stroke="Gray" StrokeThickness="1">
+                <Label Text="Clients" FontAttributes="Bold"  Margin="3"/>
             </Border>
                 <ListView
                     Grid.Row="1"
@@ -51,27 +47,27 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.Resources>
-                <Style TargetType="TextBlock">
+                <Style x:Key="TextBlockStyle" TargetType="Label">
                     <Setter Property="Margin" Value="3"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="VerticalTextAlignment" Value="Center"/>
                 </Style>
             </Grid.Resources>
             <!--#region Company Name-->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Company Name:"/>
-            <TextBox
+            <Label Grid.Row="0" Grid.Column="0" Text="Company Name:" Style="{StaticResource TextBlockStyle}"/>
+            <Entry
                 Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
                 Text="{Binding EditClient.Name}"
                 IsEnabled="{Binding IsEditing}" Margin="3"/>
             <!--#endregion-->
             <!--#region Address-->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Address:"/>
-            <TextBox
+            <Label Grid.Row="1" Grid.Column="0" Text="Address:" Style="{StaticResource TextBlockStyle}"/>
+            <Entry
                 Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"
                 Text="{Binding EditClient.AddressLine1}"
                 IsEnabled="{Binding IsEditing}"
                 MaxLength="255"
                 Margin="3"/>
-            <TextBox
+            <Entry
                 Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"
                 Text="{Binding EditClient.AddressLine2}"
                 IsEnabled="{Binding IsEditing}"
@@ -79,8 +75,8 @@
                 Margin="3"/>
             <!--#endregion-->
             <!--#region City-->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="City:"/>
-            <TextBox
+            <Label Grid.Row="3" Grid.Column="0" Text="City:" Style="{StaticResource TextBlockStyle}"/>
+            <Entry
                 Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4"
                 Text="{Binding EditClient.City}"
                 IsEnabled="{Binding IsEditing}"
@@ -88,79 +84,89 @@
                 Margin="3"/>
             <!--#endregion-->
             <!--#region Province-->
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Province:"/>
-            <ComboBox
+            <Label Grid.Row="4" Grid.Column="0" Text="Province:" Style="{StaticResource TextBlockStyle}"/>
+            <Picker
                 Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"
-                DisplayMemberPath="Name"
                 ItemsSource="{Binding ProvinceList}"
-                SelectedValuePath="Code"
-                SelectedValue="{Binding EditClient.Province}"
+                SelectedItem="{Binding EditClient.Province}"
                 IsEnabled="{Binding IsEditing}"
                 Margin="3"/>
             <!--#endregion-->
             <!--#region Postal Code-->
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Postal Code:"/>
-            <TextBox
+            <Label Grid.Row="5" Grid.Column="0" Text="Postal Code:" Style="{StaticResource TextBlockStyle}"/>
+            <Entry
                 Grid.Row="5" Grid.Column="1"
                 Text="{Binding EditClient.PostalCode}"
                 IsEnabled="{Binding IsEditing}"
                 MaxLength="9"
                 Width="75"
-                HorizontalAlignment="Left"
+                HorizontalTextAlignment="Start"
                 Margin="3"/>
             <!--#endregion-->
             <!--#region Licences-->
-            <TextBlock Grid.Row="6" Grid.Column="0" Text="Licences:"/>
-            <TextBox
+            <Label Grid.Row="6" Grid.Column="0" Text="Licences:" Style="{StaticResource TextBlockStyle}"/>
+            <Entry
                 Grid.Row="6" Grid.Column="1"
                 Text="{Binding EditClient.LicenceCount}"               
                 IsEnabled="{Binding IsEditing}"
                 MaxLength="4"
                 Width="75"
-                HorizontalAlignment="Left"
+                HorizontalTextAlignment="Start"
                 Margin="3"/>
             <!--#endregion-->
             <!--#region Renewal-->
-            <TextBlock Grid.Row="5" Grid.Column="2" Text="Renewal:" Margin="6,3,3,3" Grid.RowSpan="2"/>
+            <Label Grid.Row="5" Grid.Column="2" Text="Renewal:" Margin="6,3,3,3" Grid.RowSpan="2" Style="{StaticResource TextBlockStyle}"/>
             <DatePicker
                 Grid.Row="5" Grid.Column="3"
-                Text="{Binding EditClient.RenewalDate}"               
+                Date="{Binding EditClient.RenewalDate}"               
                 IsEnabled="{Binding IsEditing}"
-                Margin="3" Grid.RowSpan="2" VerticalAlignment="Center"/>
+                Margin="3" Grid.RowSpan="2" VerticalOptions="Center"/>
             <!--#endregion-->
             <!--#region Contacts-->
-            <GroupBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4" Header="Contacts">
-                <DataGrid                
-                    ItemsSource="{Binding EditClient.Contacts}"
-                    AutoGenerateColumns="False"
-                    RowHeaderWidth="25"
-                    IsEnabled="{Binding IsEditing}"
-                    Margin="3">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Header="First Name"
-                            Binding="{Binding FirstName}"
-                            MinWidth="100"/>
-                        <DataGridTextColumn
-                            Header="Last Name"
-                            Binding="{Binding LastName}"
-                            MinWidth="100"/>
-                        <DataGridTextColumn
-                            Header="Email"
-                            Binding="{Binding Email}"
-                            MinWidth="100"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </GroupBox>
+            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Text="First Name" Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
+                    <Label Text="Email" Grid.Row="0" Grid.Column="2"/>
+                    <CollectionView ItemsSource="{Binding  EditClient.Contacts}"
+                                    IsEnabled="{Binding IsEditing}"
+                                    Margin="3"
+                                    Grid.Row="1" Grid.ColumnSpan="3">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding FirstName}" MinimumWidthRequest="100"/>
+                                    <Label Text="{Binding LastName}" MinimumWidthRequest="100"/>
+                                    <Label Text="{Binding Email}" MinimumWidthRequest="100"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+                
+            </Border>
             <!--#endregion-->
         </Grid>
-        <StackPanel Grid.Column="2">
-            <Button Content="New" Command="{Binding NewCommand}"/>
-            <Button Content="Edit" Command="{Binding EditCommand}"/>
-            <Button Content="Delete" Command="{Binding DeleteCommand}"/>
-            <Button Content="Save" Command="{Binding SaveCommand}"/>
-            <Button Content="Cancel" Command="{Binding CancelCommand}"/>
-            <Button Content="Close" Command="{Binding CloseCommand}"/>
-        </StackPanel>
+        <StackLayout Grid.Column="2">
+            <Button Text="New" Command="{Binding NewCommand}"/>
+            <Button Text="Edit" Command="{Binding EditCommand}"/>
+            <Button Text="Delete" Command="{Binding DeleteCommand}"/>
+            <Button Text="Save" Command="{Binding SaveCommand}"/>
+            <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Text="Close" Command="{Binding CloseCommand}"/>
+        </StackLayout>
     </Grid>
-</Window>
+</ContentPage>

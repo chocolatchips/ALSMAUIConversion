@@ -35,9 +35,11 @@ namespace WPSConversion.Views
             });
 
             SelectedClient = ClientList.FirstOrDefault();
-
-            SelectedClient.Contacts.Add(new Contact() { FirstName = "Joshua", LastName = "McLean", Email = "joshua.mclean@alsglobal.com" });
-            SelectedClient.Contacts.Add(new Contact() { FirstName = "Ludivine", LastName = "Cormier", Email = "ludivine.cormier@alsglobal.com" });
+            if (SelectedClient!= null)
+            {
+                SelectedClient.Contacts.Add(new Contact() { FirstName = "Joshua", LastName = "McLean", Email = "joshua.mclean@alsglobal.com" });
+                SelectedClient.Contacts.Add(new Contact() { FirstName = "Ludivine", LastName = "Cormier", Email = "ludivine.cormier@alsglobal.com" });
+            }
 
             IsEditing = false;
         }
