@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace WinFormConversion.Platforms.MacCatalyst
+namespace WPFConversion
 {
     public class Program
     {

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace WinFormConversion
+namespace WinFormConversion.Platforms.iOS
 {
     public class Program
     {

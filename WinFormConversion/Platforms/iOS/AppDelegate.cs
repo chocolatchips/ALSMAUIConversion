@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace WinFormConversion
+namespace WinFormConversion.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

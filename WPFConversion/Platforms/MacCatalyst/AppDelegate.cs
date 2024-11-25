@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace WinFormConversion.Platforms.MacCatalyst
+namespace WPFConversion
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
