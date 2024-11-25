@@ -71,24 +71,33 @@ namespace WPFConversion.ViewModels
 
         private bool CanCancel() => IsEditing;
 
-        private void Cancel()
+        private async void Cancel()
         {
             try
             {
-                if (EditClient.IsDirty && !EditClient.IsNew)
+                bool res = await VerifyCancel();
+                if (res)
                 {
-                    SelectedClient.MatchProperties(_originalClient);
+                    if (EditClient.IsDirty && !EditClient.IsNew)
+                    {
+                        SelectedClient.MatchProperties(_originalClient);
+                    }
+
+                    _originalClient = null;
+                    EditClient = SelectedClient;
+
+                    IsEditing = false;
                 }
-
-                _originalClient = null;
-                EditClient = SelectedClient;
-
-                IsEditing = false;
             }
             catch (Exception ex)
             {
                 ShowError(ex, "Cancel");
             }
+        }
+
+        private Task<bool> VerifyCancel()
+        {
+            return TriggerVerificationAlert("Confirmation", "Confirm cancellation");
         }
         #endregion
 
@@ -97,19 +106,28 @@ namespace WPFConversion.ViewModels
 
         private bool CanDelete() => !IsEditing && SelectedClient != null;
 
-        private void Delete()
+        private async void Delete()
         {
             try
             {
-                ClientList.Remove(SelectedClient);
+                bool res = await VerifyDelete();
+                if (res)
+                {
+                    ClientList.Remove(SelectedClient);
 
-                _originalClient = null;
-                SelectedClient = null;
+                    _originalClient = null;
+                    SelectedClient = null;
+                }
             }
             catch (Exception ex)
             {
                 ShowError(ex, "Delete");
             }
+        }
+
+        private Task<bool> VerifyDelete()
+        {
+            return TriggerVerificationAlert("Confirmation", "Confirm client deletion");
         }
         #endregion
 
@@ -226,6 +244,10 @@ namespace WPFConversion.ViewModels
         {
             if (!EditClient.Validate())
             {
+                if (string.IsNullOrWhiteSpace(EditClient.City))
+                {
+                    TriggerAlert("Validation Error", "City must not be empty");
+                }
                 return false;
             }
 
@@ -233,6 +255,7 @@ namespace WPFConversion.ViewModels
             {
                 if (ClientList.Any(x => x.Name.Equals(EditClient.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
+                    TriggerAlert("Validation Error", $"Company name {EditClient.Name} already exists");
                     return false;
                 }
             }

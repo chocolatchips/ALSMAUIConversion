@@ -70,8 +70,23 @@ namespace WPFConversion.ViewModels
 
         public void ShowError(Exception ex, string methodName)
         {
-            // TODO
-            //MessageBox.Show(View as Window, $"ERROR - {GetType().Name}.{methodName}\n{ex.Message}");
+            TriggerAlert("Error", $"ERROR - {GetType().Name}.{methodName}\n{ex.Message}");
+        }
+
+        public event Action<string, string> AlertTriggered;
+        protected void TriggerAlert(string title, string message)
+        {
+            AlertTriggered?.Invoke(title, message);
+        }
+
+        public event Func<string, string, Task<bool>>? VerificationTriggered;
+        protected async Task<bool> TriggerVerificationAlert(string title, string message)
+        {
+            if (VerificationTriggered != null)
+            {
+                return await VerificationTriggered.Invoke(title, message);
+            }
+            return false;
         }
 
         /// <summary>

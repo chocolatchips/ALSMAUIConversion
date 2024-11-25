@@ -12,7 +12,20 @@ namespace WPFConversion.Views
         public ClientView()
         {
             ViewModel = new ClientViewModel(this);
+            SetAlerts();
             InitializeComponent();
+        }
+
+        private void SetAlerts()
+        {
+            ((ClientViewModel)ViewModel).AlertTriggered += async (title, message) =>
+            {
+                await DisplayAlert(title, message, "OK");
+            };
+            ((ClientViewModel)ViewModel).VerificationTriggered += async (title, message) =>
+            {
+                return await DisplayAlert(title, message, "Yes", "No");
+            };
         }
 
         public void Close()
