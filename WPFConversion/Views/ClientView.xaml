@@ -1,6 +1,7 @@
 ﻿<ContentPage x:Class="WPFConversion.Views.ClientView"
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:WPFConversion.Converters"
         Title="ClientView" HeightRequest="450" WidthRequest="800">
     <ContentPage.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
@@ -8,6 +9,9 @@
             <Setter Property="Margin" Value="3"/>
             <Setter Property="WidthRequest" Value="90"/>
         </Style>
+        <ResourceDictionary>
+            <converters:ProvinceConverter x:Key="ProvinceConverter"/>
+        </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -87,7 +91,8 @@
             <Picker
                 Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"
                 ItemsSource="{Binding ProvinceList}"
-                SelectedItem="{Binding EditClient.Province}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding EditClient.Province, Converter={StaticResource ProvinceConverter}}"
                 IsEnabled="{Binding IsEditing}"
                 Margin="3"/>
             <!--#endregion-->
@@ -146,10 +151,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Entry Text="{Binding FirstName}" MinimumWidthRequest="100"/>
-                                    <Entry Text="{Binding LastName}" MinimumWidthRequest="100"/>
-                                    <Entry Text="{Binding Email}" MinimumWidthRequest="100"/>
+                                    <Entry Text="{Binding FirstName}" MinimumWidthRequest="100" Grid.Column="0"/>
+                                    <Entry Text="{Binding LastName}" MinimumWidthRequest="100" Grid.Column="1"/>
+                                    <Entry Text="{Binding Email}" MinimumWidthRequest="100" Grid.Column="2"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WPFConversion.ViewModels
+namespace WPFConversion.Entities
 {
     public class Province
     {
