@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
 using WPFConversion.Entities;
 using WPFConversion.Views;
 using Contact = WPFConversion.Entities.Contact;
@@ -49,6 +44,19 @@ namespace WPFConversion.ViewModels
                     RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public void ContactAltered()
+        {
+            if (ContactChanged(EditClient.Contacts.Last()))
+                EditClient.Contacts.Add(new Contact());
+        }
+
+        private bool ContactChanged(Contact contact)
+        {
+            return !string.IsNullOrWhiteSpace(contact.FirstName)
+                || !string.IsNullOrWhiteSpace(contact.LastName)
+                || !string.IsNullOrWhiteSpace(contact.Email);
         }
 
         public List<Province> ProvinceList { get; protected set; }
@@ -143,6 +151,7 @@ namespace WPFConversion.ViewModels
                 _originalClient = SelectedClient.Clone();
                 EditClient = SelectedClient.Clone();
                 EditClient.AcceptChanges();
+                EditClient.Contacts.Add(new Contact());
 
                 IsEditing = true;
             }
@@ -165,6 +174,7 @@ namespace WPFConversion.ViewModels
                 _originalClient = null;
                 SelectedClient = null;
                 EditClient = new Client();
+                EditClient.Contacts.Add(new Contact());
 
                 IsEditing = true;
             }
@@ -184,6 +194,8 @@ namespace WPFConversion.ViewModels
         {
             try
             {
+                Contact lastContact = EditClient.Contacts.Last();
+                EditClient.Contacts.RemoveAt(EditClient.Contacts.Count - 1);
                 if (EditClient.IsDirty && Validate())
                 {
                     bool isNew = EditClient.IsNew;
@@ -223,6 +235,11 @@ namespace WPFConversion.ViewModels
 
                     IsEditing = false;
                 }
+                else
+                {
+                    EditClient.Contacts.Add(lastContact);
+                }
+
             }
             catch (Exception ex)
             {

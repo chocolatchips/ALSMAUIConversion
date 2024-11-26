@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:WPFConversion.Converters"
-        Title="ClientView" HeightRequest="450" WidthRequest="800">
+        Title="ClientView" MinimumHeightRequest="450" MinimumWidthRequest="800">
     <ContentPage.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="HeightRequest" Value="25"/>
@@ -142,26 +142,32 @@
                     <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
                     <Label Text="Email" Grid.Row="0" Grid.Column="2"/>
                     <CollectionView ItemsSource="{Binding  EditClient.Contacts}"
-                                    IsEnabled="{Binding IsEditing}"
-                                    Margin="3"
-                                    Grid.Row="1" Grid.ColumnSpan="3">
+                                    Margin="3" Grid.Row="1" Grid.ColumnSpan="3">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Entry Text="{Binding FirstName}" MinimumWidthRequest="100" Grid.Column="0"/>
-                                    <Entry Text="{Binding LastName}" MinimumWidthRequest="100" Grid.Column="1"/>
-                                    <Entry Text="{Binding Email}" MinimumWidthRequest="100" Grid.Column="2"/>
+                                    <Entry Text="{Binding FirstName}"
+                                           MinimumWidthRequest="100"
+                                           Unfocused="ContactEntryUnfocused"
+                                           Grid.Column="0"/>
+                                    <Entry Text="{Binding LastName}"
+                                           MinimumWidthRequest="100"
+                                           Unfocused="ContactEntryUnfocused"
+                                           Grid.Column="1"/>
+                                    <Entry Text="{Binding Email}" 
+                                           MinimumWidthRequest="100"
+                                           Unfocused="ContactEntryUnfocused"
+                                           Grid.Column="2"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </Grid>
-                
             </Border>
             <!--#endregion-->
         </Grid>

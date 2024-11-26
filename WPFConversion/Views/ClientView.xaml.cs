@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using WPFConversion.ViewModels;
+﻿using WPFConversion.ViewModels;
 
 namespace WPFConversion.Views
 {
@@ -36,6 +35,17 @@ namespace WPFConversion.Views
         public bool? ShowDialog()
         {
             throw new NotImplementedException();
+        }
+
+        private void ContactEntryUnfocused(object sender, FocusEventArgs e)
+        {
+            if (ViewModel is not ClientViewModel viewModel)
+                return;
+            if (sender is not Entry entry)
+                return;
+
+            if (entry?.BindingContext == viewModel.EditClient.Contacts.Last())
+                viewModel.ContactAltered();
         }
     }
 }
