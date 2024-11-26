@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WinFormConversion.Views.EmployeeForm"
+             x:Class="WinFormConversion.Views.EmployeeView"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:WinFormConversion.Converters"
-             Title="EmployeeForm">
+             xmlns:viewmodels="clr-namespace:WinFormConversion.ViewModels"
+             xmlns:entities="clr-namespace:WinFormConversion.Entities"
+             Title="EmployeeView">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
@@ -22,7 +24,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" x:DataType="viewmodels:EmployeeViewModel">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -49,13 +51,14 @@
                 <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
                 <Label Text="Username" Grid.Row="0" Grid.Column="2"/>
                 <CollectionView x:Name="EmployeeCollection"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="3"
+                                Grid.Row="1" Grid.ColumnSpan="3"
                                 SelectionMode="Single"
+                                x:DataType="viewmodels:EmployeeViewModel"
+                                ItemsSource="{Binding EmployeeList}"
                                 SelectedItem="{Binding SelectedEmployee}"
                                 IsEnabled="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="entities:Employee">
                             <Grid ColumnSpacing="20" Padding="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -71,27 +74,13 @@
                 </CollectionView>
             </Grid>
         </Grid>
-        <StackLayout Grid.Column="1">
-            <Button x:Name="NewButton" Text="New" IsEnabled="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}" Clicked="NewButton_Clicked"/>
-            <Button x:Name="EditButton" Text="Edit" Clicked="EditButton_Clicked">
-                <Button.IsEnabled>
-                    <MultiBinding Converter="{StaticResource SelectedAndNotEditing}">
-                        <Binding Path="SelectedEmployee"/>
-                        <Binding Path="IsEditing"/>
-                    </MultiBinding>
-                </Button.IsEnabled>
-            </Button>
-            <Button x:Name="DeleteButton" Text="Delete" Clicked="DeleteButton_Clicked">
-                <Button.IsEnabled>
-                    <MultiBinding Converter="{StaticResource SelectedAndNotEditing}">
-                        <Binding Path="SelectedEmployee"/>
-                        <Binding Path="IsEditing"/>
-                    </MultiBinding>
-                </Button.IsEnabled>
-            </Button>
-            <Button x:Name="SaveButton" Text="Save" IsEnabled="{Binding IsEditing}" Clicked="SaveButton_Clicked"/>
-            <Button x:Name="CancelButton" Text="Cancel" IsEnabled="{Binding IsEditing}" Clicked="CancelButton_Clicked"/>
-            <Button x:Name="CloseButton" Text="Close" Clicked="CloseButton_Clicked"/>
+        <StackLayout Grid.Column="1" x:DataType="viewmodels:EmployeeViewModel">
+            <Button x:Name="NewButton" Text="New" Command="{Binding NewCommand}"/>
+            <Button x:Name="EditButton" Text="Edit" Command="{Binding EditCommand}"/>
+            <Button x:Name="DeleteButton" Text="Delete" Command="{Binding DeleteCommand}"/>
+            <Button x:Name="SaveButton" Text="Save" Command="{Binding SaveCommand}"/>
+            <Button x:Name="CancelButton" Text="Cancel" Command="{Binding CancelCommand}"/>
+            <Button x:Name="CloseButton" Text="Close" Command="{Binding CloseCommand}"/>
         </StackLayout>
     </Grid>
 </ContentPage>

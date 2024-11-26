@@ -1,175 +1,236 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.Maui.Controls.Platform.Compatibility;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using WinFormConversion.Entities;
+using WinFormConversion.Views;
 
 namespace WinFormConversion.ViewModels
 {
-    public class EmployeeViewModel : INotifyPropertyChanged
+    public class EmployeeViewModel : ViewModelBase<EmployeeView>
     {
-        public ObservableCollection<Employee> Employees;
+        public ObservableCollection<Employee> EmployeeList { get; private set; }
 
-        private Employee? _selectedEmployee;
+        private Employee? _SelectedEmployee;
         public Employee? SelectedEmployee
         {
-            get => _selectedEmployee;
+            get => _SelectedEmployee;
             set
             {
-                _selectedEmployee = value;
-                OnPropertyChanged(nameof(SelectedEmployee));
-                EmployeeSelected = value != null;
-                EditingEmployee = value ?? null;
+                if (SetNotifyableProperty(ref _SelectedEmployee, value, nameof(SelectedEmployee)))
+                {
+                    EditingEmployee = value ?? null;
+                    RaiseCanExecuteChanged();
+                }
             }
         }
 
-        private Employee? _editingEmployee;
+        private Employee? _EditingEmployee;
         public Employee? EditingEmployee
         {
-            get => _editingEmployee;
+            get => _EditingEmployee;
             set
             {
-                _editingEmployee = value;
-                OnPropertyChanged(nameof(EditingEmployee));
+                if (EditingEmployee != null)
+                {
+                    EditingEmployee.AlertTriggered -= async (title, message) =>
+                    {
+                        TriggerAlert(title, message);
+                    };
+                }
+                SetNotifyableProperty(ref _EditingEmployee, value, nameof(EditingEmployee));
+                if (EditingEmployee != null)
+                {
+                    EditingEmployee.AlertTriggered += async (title, message) =>
+                    {
+                        TriggerAlert(title, message);
+                    };
+
+                }
             }
         }
 
-        private bool _employeeSelected;
-        public bool EmployeeSelected
-        {
-            get => _employeeSelected;
-            set
-            {
-                _employeeSelected = value;
-                OnPropertyChanged(nameof(EmployeeSelected));
-            }
-        }
-
-        private bool _isEditing;
+        private bool _IsEditing;
         public bool IsEditing
         {
-            get => _isEditing;
+            get => _IsEditing;
             set
             {
-                _isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-            }
-        }
-
-        public EmployeeViewModel()
-        {
-            Employees = new();
-            SaveEmployee("Chris", "Sheard", "Auto");
-            SaveEmployee("Chris", "Sheard", "Second");
-            IsEditing = false;
-        }
-
-        public string IsValidEmployee(string firstName, string lastName, string username)
-        {
-            if (string.IsNullOrWhiteSpace(firstName))
-                return "First Name must not be empty";
-            else if (string.IsNullOrWhiteSpace(lastName))
-                return "Last Name must not be empty";
-            else if (string.IsNullOrWhiteSpace(username))
-                return "Username must not be empty";
-            
-            if (SelectedEmployee == null)
-            {
-                if (Employees.Any(x => x.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase)))
+                if (SetNotifyableProperty(ref _IsEditing, value, nameof(IsEditing)))
                 {
-                    return $"Username '{username}' already exists.";
+                    RaiseCanExecuteChanged();
                 }
             }
-            else
+        }
+
+        public EmployeeViewModel(EmployeeView view)
+            : base(view)
+        {
+            SaveCommand = new DelegateCommand(Save, CanSave);
+            NewCommand = new DelegateCommand(New, CanNew);
+            EditCommand = new DelegateCommand(Edit, CanEdit);
+            DeleteCommand = new DelegateCommand(Delete, CanDelete);
+            CancelCommand = new DelegateCommand(Cancel, CanCancel);
+
+            EmployeeList = new ObservableCollection<Employee>();
+            IsEditing = false;
+            }
+
+        #region Save
+        public DelegateCommand SaveCommand { get; }
+        private bool CanSave() => IsEditing;
+        private void Save()
+        {
+            try
             {
-                if (Employees.Any(x => x.Id != SelectedEmployee.Id && x.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase)))
+                if (EditingEmployee == null)
+                    return;
+                Debug.WriteLine("Save command");
+                if (Validate())
                 {
-                    return $"Username '{username}' already exists.";
+                    bool isNew = EditingEmployee.IsNew;
+                    Employee employee;
+                    
+
+                    if (isNew)
+                        employee = EditingEmployee.Clone();
+                    else
+                    {
+                        SelectedEmployee.MatchProperties(EditingEmployee);
+                        employee = SelectedEmployee;
+                    }
+
+                    employee.AcceptChanges();
+                    SelectedEmployee = null;
+
+                    if (isNew)
+                    {
+                        EmployeeList.Add(employee);
+                    }
+
+                    RaisePropertyChanged(nameof(EmployeeList));
+                    SelectedEmployee = employee;
+                    EditingEmployee = SelectedEmployee;
+
+                    IsEditing = false;
                 }
             }
-            return string.Empty;
-        }
-
-        public void SaveEmployee(string firstName, string lastName, string username)
-        {
-            if (EmployeeSelected)
-                SaveExistingEmployee();
-            else
-                SaveNewEmployee(firstName, lastName, username);
-            
-            IsEditing = false;
-        }
-
-        private void SaveNewEmployee(string firstName, string lastName, string username)
-        {
-            Employee employee = new()
+            catch (Exception ex)
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Username = username
-            };
-            Employees.Add(employee);
-        }
-
-        private void SaveExistingEmployee()
-        {
-            if (SelectedEmployee != null && EditingEmployee != null)
-            {
-                SelectedEmployee.FirstName = EditingEmployee.FirstName;
-                SelectedEmployee.LastName = EditingEmployee.LastName;
-                SelectedEmployee.Username = EditingEmployee.Username;
+                ShowError(ex, "Save");
             }
         }
+        #endregion
 
-        public void DeleteEmployee()
+        #region New
+        public DelegateCommand NewCommand { get; }
+        private bool CanNew() => !IsEditing;
+        private void New()
         {
-            if (SelectedEmployee == null)
-                return;
-
-            Employees.Remove(SelectedEmployee);
+            try
+            {
+                SelectedEmployee = null;
+                EditingEmployee = new Employee();
+                IsEditing = true;
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex, "New");
+            }
         }
+        #endregion
 
-        public void EditEmployee()
+        #region Edit
+        public DelegateCommand EditCommand { get; }
+        private bool CanEdit() => !IsEditing && SelectedEmployee != null;
+        private void Edit()
         {
-            IsEditing = true;
-            if (SelectedEmployee != null)
+            try
+            {
+                if (SelectedEmployee == null)
+                    return;
                 EditingEmployee = SelectedEmployee.Clone();
-        }
-
-        public void CreateNewEmployee()
-        {
-            IsEditing = true;
-            SelectedEmployee = null;
-        }
-
-        public void CancelEdit()
-        {
-            if (EmployeeSelected)
-                CancelEditExisting();
-            else
-                CancelEditNew();
-
-            IsEditing = false;
-        }
-
-        private void CancelEditExisting()
-        {
-            if (SelectedEmployee != null && EditingEmployee != null)
+                EditingEmployee.AcceptChanges();
+                IsEditing = true;
+            }
+            catch (Exception ex)
             {
-                EditingEmployee.FirstName = SelectedEmployee.FirstName;
-                EditingEmployee.LastName = SelectedEmployee.LastName;
-                EditingEmployee.Username = SelectedEmployee.Username;
+                ShowError(ex, "Edit");
+            }
+        }
+        #endregion
 
+        #region Delete
+        public DelegateCommand DeleteCommand { get; }
+        private bool CanDelete() => !IsEditing && SelectedEmployee != null;
+        private async void Delete()
+        {
+            try
+            {
+                bool res = await VerifyDelete();
+                if (res)
+                {
+                    EmployeeList.Remove(SelectedEmployee);
+
+                    SelectedEmployee = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex, "Delete");
             }
         }
 
-        private void CancelEditNew()
+        private async Task<bool> VerifyDelete()
         {
-            SelectedEmployee = null;
+            return await TriggerVerificationAlert("Confirmation", $"Do you really want to delete \'{SelectedEmployee}\'");
+        }
+        #endregion
+        
+        #region Cancel
+        public DelegateCommand CancelCommand { get; }
+        private bool CanCancel() => IsEditing;
+        private void Cancel()
+        {
+            try
+            {
+                EditingEmployee = SelectedEmployee;
+                RaisePropertyChanged(nameof(EditingEmployee));
+                IsEditing = false;
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex, "Cancel");
+            }
+        }
+        #endregion
+
+
+        private bool Validate()
+        {
+            if (!EditingEmployee.Validate())
+            {
+                return false;
+            }
+            if (EditingEmployee.IsNew)
+            {
+                if (EmployeeList.Any(x => x.Username.Equals(EditingEmployee.Username, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    TriggerAlert("Validation Error", $"Username '{EditingEmployee.ToString()}' already exists");
+                }
+                return false;
+            }
+            return true;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        private void RaiseCanExecuteChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CancelCommand.RaiseCanExecuteChanged();
+            DeleteCommand.RaiseCanExecuteChanged();
+            EditCommand.RaiseCanExecuteChanged();
+            NewCommand.RaiseCanExecuteChanged();
+            SaveCommand.RaiseCanExecuteChanged();
         }
     }
 }

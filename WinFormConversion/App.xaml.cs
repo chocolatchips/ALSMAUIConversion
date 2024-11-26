@@ -1,4 +1,5 @@
-﻿namespace WinFormConversion
+﻿using WinFormConversion.Views;
+namespace WinFormConversion
 {
     public partial class App : Application
     {
@@ -9,7 +10,9 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            Window window = new(new EmployeeView());
+
+            return window; 
         }
     }
 }
