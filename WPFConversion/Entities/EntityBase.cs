@@ -76,7 +76,7 @@ namespace WPFConversion.Entities
 
         /// <summary>
         /// Sets a value to a field. If it's a new value, raises PropertyChanged event, sets IsChanged to true.
-        /// Returs whether the field value changed.
+        /// Returns whether the field value changed.
         /// </summary>
         /// <typeparam name="T">Field type</typeparam>
         /// <param name="field">Backing field variable (not the public property)</param>

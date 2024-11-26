@@ -1,7 +1,9 @@
 ﻿<ContentPage x:Class="WPFConversion.Views.ClientView"
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converters="clr-namespace:WPFConversion.Converters"
+        xmlns:converters="clr-namespace:WPFConversion.Converters"
+        xmlns:viewmodels="clr-namespace:WPFConversion.ViewModels"
+        xmlns:entites="clr-namespace:WPFConversion.Entities"
         Title="ClientView" MinimumHeightRequest="450" MinimumWidthRequest="800">
     <ContentPage.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
@@ -27,12 +29,12 @@
             <Border Grid.Row="0" Background="LightGray" Stroke="Gray" StrokeThickness="1">
                 <Label Text="Clients" FontAttributes="Bold"  Margin="3"/>
             </Border>
-                <ListView
+                <ListView x:DataType="viewmodels:ClientViewModel"
                     Grid.Row="1"
                     ItemsSource="{Binding ClientList}"
                     SelectedItem="{Binding SelectedClient}"/>
             </Grid>
-        <Grid Grid.Column="1" Margin="3">
+        <Grid Grid.Column="1" Margin="3" x:DataType="viewmodels:ClientViewModel">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -145,7 +147,7 @@
                                     Margin="3" Grid.Row="1" Grid.ColumnSpan="3">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid x:DataType="entites:Contact">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
@@ -171,7 +173,7 @@
             </Border>
             <!--#endregion-->
         </Grid>
-        <StackLayout Grid.Column="2">
+        <StackLayout Grid.Column="2" x:DataType="viewmodels:ClientViewModel">
             <Button Text="New" Command="{Binding NewCommand}"/>
             <Button Text="Edit" Command="{Binding EditCommand}"/>
             <Button Text="Delete" Command="{Binding DeleteCommand}"/>

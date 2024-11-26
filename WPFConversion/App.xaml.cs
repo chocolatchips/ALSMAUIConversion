@@ -7,12 +7,11 @@ namespace WPFConversion
         public App()
         {
             InitializeComponent();
-            MainPage = new ClientView();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = base.CreateWindow(activationState);
+            Window window = new(new ClientView());
 
             //Width requires extra 20px to not reducce button size
             int width = 820;
@@ -22,7 +21,6 @@ namespace WPFConversion
             window.Width = width;
 
             return window;
-            //return new Window(new AppShell());
         }
     }
 }

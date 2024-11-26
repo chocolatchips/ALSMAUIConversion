@@ -105,7 +105,7 @@ namespace WPFConversion.ViewModels
 
         private Task<bool> VerifyCancel()
         {
-            return TriggerVerificationAlert("Confirmation", "Confirm cancellation");
+            return TriggerVerificationAlert("Confirmation", "Are you sure you want to cancel editing? Any changes will be lost.");
         }
         #endregion
 
@@ -135,7 +135,7 @@ namespace WPFConversion.ViewModels
 
         private Task<bool> VerifyDelete()
         {
-            return TriggerVerificationAlert("Confirmation", "Confirm client deletion");
+            return TriggerVerificationAlert("Confirmation", $"Do you really want to delete \'{SelectedClient}\'");
         }
         #endregion
 
