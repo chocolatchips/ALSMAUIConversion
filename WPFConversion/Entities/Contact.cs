@@ -56,6 +56,25 @@
             return true;
         }
 
+        /// <summary>
+        /// Checks (FirstName, LastName, and Email) for non-whitespace characters. Returns if non-whitespace character found. 
+        /// </summary>
+        /// <returns>True if any of (FirstName, LastName, Email) are not null, empty, or whitespace; otherwise returns false</returns>
+        public bool NotEmpty()
+        {
+            return !string.IsNullOrWhiteSpace(FirstName)
+                || !string.IsNullOrWhiteSpace(LastName)
+                || !string.IsNullOrWhiteSpace(Email);
+        }
+
+        public event Func<string, string, Task>? AlertTriggered;
+        protected async Task TriggerAlert(string title, string message)
+        {
+            if (AlertTriggered != null)
+                await AlertTriggered.Invoke(title, message);
+        }
+
+
         public override string ToString()
         {
             return $"{FirstName} {LastName}";

@@ -46,17 +46,14 @@ namespace WPFConversion.ViewModels
             }
         }
 
+        /// <summary>
+        /// Checks if last contact in EditClient has been modified. If contact has been modified,
+        /// adds a new contact to client's ContactList.
+        /// </summary>
         public void ContactAltered()
         {
-            if (ContactChanged(EditClient.Contacts.Last()))
+            if (EditClient.Contacts.Last().NotEmpty())
                 EditClient.Contacts.Add(new Contact());
-        }
-
-        private bool ContactChanged(Contact contact)
-        {
-            return !string.IsNullOrWhiteSpace(contact.FirstName)
-                || !string.IsNullOrWhiteSpace(contact.LastName)
-                || !string.IsNullOrWhiteSpace(contact.Email);
         }
 
         public List<Province> ProvinceList { get; protected set; }
