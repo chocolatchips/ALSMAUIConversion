@@ -4,13 +4,8 @@
         xmlns:converters="clr-namespace:WPFConversion.Converters"
         xmlns:viewmodels="clr-namespace:WPFConversion.ViewModels"
         xmlns:entites="clr-namespace:WPFConversion.Entities"
-        Title="ClientView" MinimumHeightRequest="450" MinimumWidthRequest="800">
+        Title="ClientView">
     <ContentPage.Resources>
-        <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="HeightRequest" Value="25"/>
-            <Setter Property="Margin" Value="3"/>
-            <Setter Property="WidthRequest" Value="90"/>
-        </Style>
         <ResourceDictionary>
             <converters:ProvinceConverter x:Key="ProvinceConverter"/>
         </ResourceDictionary>
@@ -21,19 +16,33 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Margin="3">
+        <!--#region Client List-->
+        <Grid Grid.Column="0" Margin="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="LightGray" Stroke="Gray" StrokeThickness="1">
+            <Border Grid.Row="0" Background="LightGray" Stroke="Black" StrokeThickness="0.5">
                 <Label Text="Clients" FontAttributes="Bold"  Margin="3"/>
             </Border>
-                <ListView x:DataType="viewmodels:ClientViewModel"
-                    Grid.Row="1"
+            <Border Grid.Row="1" Stroke="Black" StrokeThickness="0.5">
+                <CollectionView x:DataType="viewmodels:ClientViewModel"
                     ItemsSource="{Binding ClientList}"
-                    SelectedItem="{Binding SelectedClient}"/>
-            </Grid>
+                    SelectedItem="{Binding SelectedClient}"
+                                SelectionMode="Single"
+                          HorizontalOptions="StartAndExpand"
+                          Margin="5" BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="entites:Client">
+                            <Border BackgroundColor="{StaticResource Gray075}" Stroke="{StaticResource Gray300}">
+                                <Label Text="{Binding Name}" TextColor="Black"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+        </Grid>
+        <!--#endregion-->
         <Grid Grid.Column="1" Margin="3" x:DataType="viewmodels:ClientViewModel">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -59,66 +68,73 @@
             </Grid.Resources>
             <!--#region Company Name-->
             <Label Grid.Row="0" Grid.Column="0" Text="Company Name:" Style="{StaticResource TextBlockStyle}"/>
-            <Entry
-                Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
-                Text="{Binding EditClient.Name}"
-                IsEnabled="{Binding IsEditing}" Margin="3"/>
+            <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4">
+                <Entry
+                    Text="{Binding EditClient.Name}"
+                    IsEnabled="{Binding IsEditing}" Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region Address-->
             <Label Grid.Row="1" Grid.Column="0" Text="Address:" Style="{StaticResource TextBlockStyle}"/>
-            <Entry
-                Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"
-                Text="{Binding EditClient.AddressLine1}"
-                IsEnabled="{Binding IsEditing}"
-                MaxLength="255"
-                Margin="3"/>
-            <Entry
-                Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"
-                Text="{Binding EditClient.AddressLine2}"
-                IsEnabled="{Binding IsEditing}"
-                MaxLength="255"
-                Margin="3"/>
+            <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4">
+                <Entry
+                    Text="{Binding EditClient.AddressLine1}"
+                    IsEnabled="{Binding IsEditing}"
+                    MaxLength="255"
+                    Margin="3"/>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
+                <Entry
+                    Text="{Binding EditClient.AddressLine2}"
+                    IsEnabled="{Binding IsEditing}"
+                    MaxLength="255"
+                    Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region City-->
             <Label Grid.Row="3" Grid.Column="0" Text="City:" Style="{StaticResource TextBlockStyle}"/>
-            <Entry
-                Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4"
-                Text="{Binding EditClient.City}"
-                IsEnabled="{Binding IsEditing}"
-                MaxLength="255"
-                Margin="3"/>
+            <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
+                <Entry
+                    Text="{Binding EditClient.City}"
+                    IsEnabled="{Binding IsEditing}"
+                    MaxLength="255"
+                    Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region Province-->
             <Label Grid.Row="4" Grid.Column="0" Text="Province:" Style="{StaticResource TextBlockStyle}"/>
-            <Picker
-                Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"
-                ItemsSource="{Binding ProvinceList}"
-                ItemDisplayBinding="{Binding Name}"
-                SelectedItem="{Binding EditClient.Province, Converter={StaticResource ProvinceConverter}}"
-                IsEnabled="{Binding IsEditing}"
-                Margin="3"/>
+            <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4">
+                <Picker
+                    ItemsSource="{Binding ProvinceList}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding EditClient.Province, Converter={StaticResource ProvinceConverter}}"
+                    IsEnabled="{Binding IsEditing}"
+                    Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region Postal Code-->
             <Label Grid.Row="5" Grid.Column="0" Text="Postal Code:" Style="{StaticResource TextBlockStyle}"/>
-            <Entry
-                Grid.Row="5" Grid.Column="1"
-                Text="{Binding EditClient.PostalCode}"
-                IsEnabled="{Binding IsEditing}"
-                MaxLength="9"
-                Width="75"
-                HorizontalTextAlignment="Start"
-                Margin="3"/>
+            <Border Grid.Row="5" Grid.Column="1">
+                <Entry
+                    Text="{Binding EditClient.PostalCode}"
+                    IsEnabled="{Binding IsEditing}"
+                    MaxLength="9"
+                    WidthRequest="75"
+                    HorizontalTextAlignment="Start"
+                    Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region Licences-->
             <Label Grid.Row="6" Grid.Column="0" Text="Licences:" Style="{StaticResource TextBlockStyle}"/>
-            <Entry
-                Grid.Row="6" Grid.Column="1"
-                Text="{Binding EditClient.LicenceCount}"               
-                IsEnabled="{Binding IsEditing}"
-                MaxLength="4"
-                Width="75"
-                HorizontalTextAlignment="Start"
-                Margin="3"/>
+            <Border Grid.Row="6" Grid.Column="1">
+                <Entry
+                    Text="{Binding EditClient.LicenceCount}"               
+                    IsEnabled="{Binding IsEditing}"
+                    MaxLength="4"
+                    WidthRequest="75"
+                    HorizontalTextAlignment="Start"
+                    Margin="3"/>
+            </Border>
             <!--#endregion-->
             <!--#region Renewal-->
             <Label Grid.Row="5" Grid.Column="2" Text="Renewal:" Margin="6,3,3,3" Grid.RowSpan="2" Style="{StaticResource TextBlockStyle}"/>
@@ -138,33 +154,47 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Label Text="First Name" Grid.Row="0" Grid.Column="0"/>
-                    <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
-                    <Label Text="Email" Grid.Row="0" Grid.Column="2"/>
+                    <Label Text="Contacts" Grid.Row="0" Grid.Column="0"/>
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <Label Text="First Name" IsEnabled="{Binding IsEditing}"/>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1">
+                        <Label Text="Last Name" IsEnabled="{Binding IsEditing}"/>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="2">
+                        <Label Text="Email" IsEnabled="{Binding IsEditing}"/>
+                    </Border>
                     <CollectionView ItemsSource="{Binding  EditClient.Contacts}"
-                                    Margin="3" Grid.Row="1" Grid.ColumnSpan="3">
+                                    Margin="3" Grid.Row="2" Grid.ColumnSpan="3">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid x:DataType="entites:Contact">
+                                <Grid x:DataType="entites:Contact" BackgroundColor="White">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="2*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Entry Text="{Binding FirstName}"
+                                    <Border Grid.Column="0" Stroke="Black" StrokeThickness="0.75">
+                                        <Entry Text="{Binding FirstName}"
                                            MinimumWidthRequest="100"
-                                           Unfocused="ContactEntryUnfocused"
-                                           Grid.Column="0"/>
-                                    <Entry Text="{Binding LastName}"
-                                           MinimumWidthRequest="100"
-                                           Unfocused="ContactEntryUnfocused"
-                                           Grid.Column="1"/>
-                                    <Entry Text="{Binding Email}" 
-                                           MinimumWidthRequest="100"
-                                           Unfocused="ContactEntryUnfocused"
-                                           Grid.Column="2"/>
+                                           Unfocused="ContactEntryUnfocused"/>
+                                    </Border>
+                                    <Border Grid.Column="1" Stroke="Black" StrokeThickness="0.75">
+                                        <Entry Text="{Binding LastName}"
+                                            MinimumWidthRequest="100"
+                                            Unfocused="ContactEntryUnfocused"/>
+                                    </Border>
+                                    <Border Grid.Column="2" Stroke="Black" StrokeThickness="0.75">
+                                        <Entry Text="{Binding Email}" 
+                                            MinimumWidthRequest="100"
+                                            Unfocused="ContactEntryUnfocused"/>
+                                    </Border>
+                                    
+                                    
+                                    
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

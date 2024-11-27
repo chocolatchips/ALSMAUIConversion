@@ -12,7 +12,7 @@ namespace WPFConversion
         protected override Window CreateWindow(IActivationState? activationState)
         {
             Window window = new(new ClientView());
-
+            window.Title = "ClientView";
             //Width requires extra 20px to not reducce button size
             int width = 820;
             int height = 500;
