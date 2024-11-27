@@ -37,6 +37,14 @@ namespace WPFConversion.Views
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Handles unfocuded event for contact entry control in view.
+        /// Verifies binding matches last contact in EditClient's ContactList
+        /// to check if new client needs to be added. Intended to simulate the
+        /// functionality of WPF DataGrid control.
+        /// </summary>
+        /// <param name="sender">Source of event, <see cref="Entry"/> expected.</param>
+        /// <param name="e">Event arguments for focus change.</param>
         private void ContactEntryUnfocused(object sender, FocusEventArgs e)
         {
             if (ViewModel is not ClientViewModel viewModel)

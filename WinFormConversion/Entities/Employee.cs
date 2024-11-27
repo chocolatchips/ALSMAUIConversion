@@ -66,13 +66,10 @@ namespace WinFormConversion.Entities
             return true;
         }
 
+        /// <summary>
+        /// Allows triggering alert on validation failure.
+        /// </summary>
         public event Func<string, string, Task>? AlertTriggered;
-        protected async Task TriggerAlert(string title, string message)
-        {
-            if (AlertTriggered != null)
-                await AlertTriggered.Invoke(title, message);
-        }
-
 
         public override string ToString()
         {

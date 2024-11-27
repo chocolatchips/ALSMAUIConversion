@@ -34,6 +34,7 @@ namespace WinFormConversion.ViewModels
             {
                 if (EditingEmployee != null)
                 {
+                    // Disconnects Employee.AlertTriggered to ViewBaseModel.TriggerAlert
                     EditingEmployee.AlertTriggered -= async (title, message) =>
                     {
                         TriggerAlert(title, message);
@@ -42,6 +43,8 @@ namespace WinFormConversion.ViewModels
                 SetNotifyableProperty(ref _EditingEmployee, value, nameof(EditingEmployee));
                 if (EditingEmployee != null)
                 {
+                    // Connects Employee.AlertTriggered to ViewBaseModel.TriggerAlert allowing
+                    // for EditEmployee to display alerts.
                     EditingEmployee.AlertTriggered += async (title, message) =>
                     {
                         TriggerAlert(title, message);
