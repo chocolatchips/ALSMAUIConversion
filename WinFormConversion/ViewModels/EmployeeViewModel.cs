@@ -86,7 +86,6 @@ namespace WinFormConversion.ViewModels
             {
                 if (EditingEmployee == null)
                     return;
-                Debug.WriteLine("Save command");
                 if (Validate())
                 {
                     bool isNew = EditingEmployee.IsNew;
@@ -218,8 +217,8 @@ namespace WinFormConversion.ViewModels
                 if (EmployeeList.Any(x => x.Username.Equals(EditingEmployee.Username, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     TriggerAlert("Validation Error", $"Username '{EditingEmployee.ToString()}' already exists");
+                    return false;
                 }
-                return false;
             }
             return true;
         }
