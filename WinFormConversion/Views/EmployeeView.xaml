@@ -63,9 +63,9 @@
                 <!--#endregion-->
             </Grid>
             <!--#endregion-->
-            <!--#region Clients-->
+            <!--#region Employees-->
             <Border Grid.Row="1">
-                <Grid BackgroundColor="White" >
+                <Grid BackgroundColor="{StaticResource Gray050}" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -75,6 +75,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <!--#region Employees Labels-->
                     <Border Grid.Row="0" Grid.Column="0" StrokeThickness="0.5" Stroke="{StaticResource Gray200}">
                         <Label Text="First Name" Grid.Row="0" Grid.Column="0"/>
                     </Border>
@@ -84,6 +85,8 @@
                     <Border Grid.Row="0" Grid.Column="2" StrokeThickness="0.5" Stroke="{StaticResource Gray200}">
                         <Label Text="Username" Grid.Row="0" Grid.Column="2"/>
                     </Border>
+                    <!--#endregion-->
+                    <!--#region Employees List-->
                     <CollectionView x:Name="EmployeeCollection"
                                     Grid.Row="1" Grid.ColumnSpan="3"
                                     SelectionMode="Single"
@@ -112,6 +115,7 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+                    <!--#endregion-->
                 </Grid>
             </Border>
             <!--#endregion-->

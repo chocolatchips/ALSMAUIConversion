@@ -88,7 +88,6 @@
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource Gray050}"/>
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
