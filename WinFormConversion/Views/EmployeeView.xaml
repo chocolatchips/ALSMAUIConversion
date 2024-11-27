@@ -3,78 +3,121 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WinFormConversion.Views.EmployeeView"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:converters="clr-namespace:WinFormConversion.Converters"
              xmlns:viewmodels="clr-namespace:WinFormConversion.ViewModels"
              xmlns:entities="clr-namespace:WinFormConversion.Entities"
              Title="EmployeeView">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
-            <converters:SelectedAndNotEditingConverter x:Key="SelectedAndNotEditing"/>
         </ResourceDictionary>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
     </ContentPage.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <!--#region EmployeeEntry-->
             <Grid Grid.Row="0" x:DataType="viewmodels:EmployeeViewModel">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Entry x:Name="FirstNameEntry" Grid.Column="0"
-                       Text="{Binding EditingEmployee.FirstName}" IsEnabled="{Binding IsEditing}"/>
-                <Entry x:Name="LastNameEntry" Grid.Column="1"
-                       Text="{Binding EditingEmployee.LastName}" IsEnabled="{Binding IsEditing}"/>
-                <Entry x:Name="UserNameEntry" Grid.Column="2"
-                       Text="{Binding EditingEmployee.Username}" IsEnabled="{Binding IsEditing}"/>
+                <!--#region First Name-->
+                <Border Grid.Column="0" IsEnabled="{Binding IsEditing}">
+                    <Entry x:Name="FirstNameEntry" VerticalTextAlignment="Start"
+       Text="{Binding EditingEmployee.FirstName}" IsEnabled="{Binding IsEditing}"/>
+                </Border>
+                <!--#endregion-->
+                <!--#region Last Name-->
+                <Border  Grid.Column="1" IsEnabled="{Binding IsEditing}">
+                    <Entry x:Name="LastNameEntry"
+       Text="{Binding EditingEmployee.LastName}" IsEnabled="{Binding IsEditing}"/>
+                </Border>
+                <!--#endregion-->
+                <!--#region Username-->
+                <Border Grid.Column="2" IsEnabled="{Binding IsEditing}">
+                    <Entry x:Name="UserNameEntry" 
+       Text="{Binding EditingEmployee.Username}" IsEnabled="{Binding IsEditing}"/>
+                </Border>
+                <!--#endregion-->
             </Grid>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Text="First Name" Grid.Row="0" Grid.Column="0"/>
-                <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
-                <Label Text="Username" Grid.Row="0" Grid.Column="2"/>
-                <CollectionView x:Name="EmployeeCollection"
-                                Grid.Row="1" Grid.ColumnSpan="3"
-                                SelectionMode="Single"
-                                x:DataType="viewmodels:EmployeeViewModel"
-                                ItemsSource="{Binding EmployeeList}"
-                                SelectedItem="{Binding SelectedEmployee}"
-                                IsEnabled="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="entities:Employee">
-                            <Grid ColumnSpacing="20" Padding="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text="{Binding FirstName}"/>
-                                <Label Grid.Column="1" Text="{Binding LastName}"/>
-                                <Label Grid.Column="2" Text="{Binding Username}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
+            <!--#endregion-->
+            <!--#region Clients-->
+            <Border Grid.Row="1">
+                <Grid BackgroundColor="White" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" StrokeThickness="0.5" Stroke="{StaticResource Gray200}">
+                        <Label Text="First Name" Grid.Row="0" Grid.Column="0"/>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1" StrokeThickness="0.5" Stroke="{StaticResource Gray200}">
+                        <Label Text="Last Name" Grid.Row="0" Grid.Column="1"/>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="2" StrokeThickness="0.5" Stroke="{StaticResource Gray200}">
+                        <Label Text="Username" Grid.Row="0" Grid.Column="2"/>
+                    </Border>
+                    <CollectionView x:Name="EmployeeCollection"
+                                    Grid.Row="1" Grid.ColumnSpan="3"
+                                    SelectionMode="Single"
+                                    x:DataType="viewmodels:EmployeeViewModel"
+                                    ItemsSource="{Binding EmployeeList}"
+                                    SelectedItem="{Binding SelectedEmployee}"
+                                    IsEnabled="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="entities:Employee">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" StrokeThickness="0.5" BackgroundColor="Transparent">
+                                        <Label  Text="{Binding FirstName}" BackgroundColor="Transparent"/>
+                                    </Border>
+                                    <Border Grid.Column="1" StrokeThickness="0.5" BackgroundColor="Transparent">
+                                        <Label Grid.Column="1" Text="{Binding LastName}" BackgroundColor="Transparent"/>
+                                    </Border>
+                                    <Border Grid.Column="2" StrokeThickness="0.5" BackgroundColor="Transparent">
+                                        <Label Grid.Column="2" Text="{Binding Username}" BackgroundColor="Transparent"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Border>
+            <!--#endregion-->
         </Grid>
-        <StackLayout Grid.Column="1" x:DataType="viewmodels:EmployeeViewModel">
+        <!--#region Buttons-->
+        <StackLayout Grid.Column="1" x:DataType="viewmodels:EmployeeViewModel" Spacing="5">
             <Button x:Name="NewButton" Text="New" Command="{Binding NewCommand}"/>
             <Button x:Name="EditButton" Text="Edit" Command="{Binding EditCommand}"/>
             <Button x:Name="DeleteButton" Text="Delete" Command="{Binding DeleteCommand}"/>
@@ -82,5 +125,6 @@
             <Button x:Name="CancelButton" Text="Cancel" Command="{Binding CancelCommand}"/>
             <Button x:Name="CloseButton" Text="Close" Command="{Binding CloseCommand}"/>
         </StackLayout>
+        <!--#endregion-->
     </Grid>
 </ContentPage>
