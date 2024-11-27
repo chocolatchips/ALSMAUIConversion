@@ -109,8 +109,6 @@ namespace WinFormConversion.ViewModels
                     }
 
                     RaisePropertyChanged(nameof(EmployeeList));
-                    SelectedEmployee = employee;
-                    EditingEmployee = SelectedEmployee;
 
                     IsEditing = false;
                 }
